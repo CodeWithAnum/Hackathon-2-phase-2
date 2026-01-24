@@ -1,0 +1,65 @@
+═══════════════════════════════════════════════════════════════
+                    FINAL DEPLOYMENT ACTION PLAN
+═══════════════════════════════════════════════════════════════
+
+STEP 1: OPEN HUGGING FACE SPACE
+→ Go to: https://huggingface.co/spaces/anumhussain/backend
+
+STEP 2: UPLOAD BACKEND FILES
+1. Click "Files" tab
+2. Click "Add file" → "Upload files"
+3. Navigate to this folder on your computer:
+   C:\Users\user\Documents\Gemini_CLI\Hackathon-2\Todo App\Phase-2\Hackathon-II\phase-II\backend\hf-space
+
+4. Select ALL files and folders:
+   ✓ README.md
+   ✓ Dockerfile
+   ✓ app.py
+   ✓ requirements.txt
+   ✓ alembic.ini
+   ✓ alembic/ (folder)
+   ✓ src/ (folder)
+
+5. Click "Commit changes to main"
+
+STEP 3: ADD ENVIRONMENT VARIABLES
+1. Click "Settings" tab
+2. Scroll to "Repository secrets"
+3. Click "New secret" for each variable below:
+
+Copy these EXACTLY (from ENV_VARIABLES.txt):
+
+DATABASE_URL=postgresql://neondb_owner:npg_9FGMa6lBfgWq@ep-bold-cloud-ahbqu5uz-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+JWT_ALGORITHM=HS256
+JWT_EXPIRATION_MINUTES=15
+JWT_REFRESH_EXPIRATION_HOURS=168
+BCRYPT_ROUNDS=12
+DEBUG=false
+LOG_LEVEL=info
+API_HOST=0.0.0.0
+API_PORT=7860
+
+STEP 4: WAIT FOR BUILD (3-5 minutes)
+→ Watch the "Logs" tab for build progress
+→ Wait for: "Running on http://0.0.0.0:7860"
+
+STEP 5: TEST DEPLOYMENT
+1. Test backend health:
+   https://anumhussain-backend.hf.space/health
+   Expected: {"status":"healthy"}
+
+2. Test API docs:
+   https://anumhussain-backend.hf.space/docs
+   Expected: Swagger UI interface
+
+3. Test full application:
+   https://hackathon-2-phase-2-three-eight.vercel.app
+   - Sign up with new account
+   - Sign in
+   - Create a task
+   - Verify it works end-to-end
+
+═══════════════════════════════════════════════════════════════
+                    READY TO DEPLOY!
+═══════════════════════════════════════════════════════════════
