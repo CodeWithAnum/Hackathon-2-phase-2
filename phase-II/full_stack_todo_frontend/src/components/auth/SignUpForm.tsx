@@ -120,11 +120,11 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
       setFormState((prev) => ({ ...prev, isSubmitting: true, errors: {} }));
       await signUp(formState.email, formState.password);
       onSuccess?.();
-    } catch (error: any) {
+    } catch (error: unknown) {
       setFormState((prev) => ({
         ...prev,
         isSubmitting: false,
-        errors: { general: error.message || 'Sign up failed. Email may already exist.' },
+        errors: { general: error instanceof Error ? error.message : 'Sign up failed. Email may already exist.' },
       }));
     }
   };

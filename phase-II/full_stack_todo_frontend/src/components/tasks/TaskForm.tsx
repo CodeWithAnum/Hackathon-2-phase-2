@@ -91,10 +91,10 @@ export function TaskForm({
         title: formState.title.trim(),
         description: formState.description.trim() || undefined,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       setFormState((prev) => ({
         ...prev,
-        errors: { general: error.message || 'Failed to save task' },
+        errors: { general: error instanceof Error ? error.message : 'Failed to save task' },
       }));
     }
   };

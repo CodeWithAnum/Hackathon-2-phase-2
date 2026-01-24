@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useTasks } from '@/lib/hooks/useTasks';
 import { TaskList } from '@/components/tasks/TaskList';
@@ -20,17 +20,12 @@ export default function TasksPage() {
     goToPage,
   } = useTasks();
 
-  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
-
   const handleDelete = async (taskId: string) => {
     if (confirm('Are you sure you want to delete this task?')) {
       try {
-        setDeletingTaskId(taskId);
         await handleDeleteTask(taskId);
       } catch (error) {
         console.error('Failed to delete task:', error);
-      } finally {
-        setDeletingTaskId(null);
       }
     }
   };

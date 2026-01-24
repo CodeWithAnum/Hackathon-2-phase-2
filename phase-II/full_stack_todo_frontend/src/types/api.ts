@@ -4,7 +4,7 @@ export interface ErrorResponse {
   error: {
     code: string;              // Error code (UNAUTHORIZED, INVALID_CREDENTIALS, etc.)
     message: string;           // User-friendly error message
-    details: Record<string, any> | null;  // Additional error details
+    details: Record<string, unknown> | null;  // Additional error details
   };
 }
 

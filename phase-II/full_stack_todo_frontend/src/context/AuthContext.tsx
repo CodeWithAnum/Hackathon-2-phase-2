@@ -82,11 +82,11 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
           });
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       setAuthState(prev => ({
         ...prev,
         loading: false,
-        error: error.message || 'Sign in failed',
+        error: error instanceof Error ? error.message : 'Sign in failed',
         isAuthenticated: false,
         user: null
       }));
@@ -117,11 +117,11 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
           });
         }
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       setAuthState(prev => ({
         ...prev,
         loading: false,
-        error: error.message || 'Sign up failed',
+        error: error instanceof Error ? error.message : 'Sign up failed',
         isAuthenticated: false,
         user: null
       }));

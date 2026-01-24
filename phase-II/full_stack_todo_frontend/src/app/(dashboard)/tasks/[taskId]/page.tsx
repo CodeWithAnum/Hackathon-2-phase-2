@@ -34,8 +34,8 @@ export default function TaskDetailPage() {
         setLoading(true);
         const taskData = await getTask(user.id, taskId);
         setTask(taskData);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load task');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load task');
       } finally {
         setLoading(false);
       }
@@ -65,9 +65,9 @@ export default function TaskDetailPage() {
     try {
       await deleteTask(taskId);
       router.push('/tasks');
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to delete task:', error);
-      setError(error.message || 'Failed to delete task');
+      setError(error instanceof Error ? error.message : 'Failed to delete task');
       setIsDeleting(false);
       setShowDeleteModal(false);
     }

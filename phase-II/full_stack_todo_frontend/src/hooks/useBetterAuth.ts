@@ -42,8 +42,11 @@ export function useBetterAuth(): AuthContextType {
       } else {
         throw new Error('Sign in failed - no token received');
       }
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.error?.message || error.message || 'Sign in failed';
+    } catch (error: unknown) {
+      const message = error && typeof error === 'object' && 'response' in error
+        ? (error as { response?: { data?: { error?: { message?: string } } }; message?: string }).response?.data?.error?.message
+        : error instanceof Error ? error.message : 'Sign in failed';
+      const errorMessage = message || (error instanceof Error ? error.message : 'Sign in failed');
       throw new Error(errorMessage);
     }
   }, [router]);
@@ -62,21 +65,19 @@ export function useBetterAuth(): AuthContextType {
       } else {
         throw new Error('Sign up failed - no token received');
       }
-    } catch (error: any) {
-      const errorMessage = error.response?.data?.error?.message || error.message || 'Sign up failed';
+    } catch (error: unknown) {
+      const message = error && typeof error === 'object' && 'response' in error
+        ? (error as { response?: { data?: { error?: { message?: string } } }; message?: string }).response?.data?.error?.message
+        : error instanceof Error ? error.message : 'Sign up failed';
+      const errorMessage = message || (error instanceof Error ? error.message : 'Sign up failed');
       throw new Error(errorMessage);
     }
   }, [router]);
 
   const signOutHandler = useCallback(async () => {
-    try {
-      // Clear the stored token
-      localStorage.removeItem('access_token');
-      router.push('/signin');
-    } catch (error) {
-      // Even if sign out fails, redirect to sign in
-      router.push('/signin');
-    }
+    // Clear the stored token
+    localStorage.removeItem('access_token');
+    router.push('/signin');
   }, [router]);
 
   const refreshAuth = useCallback(() => {
