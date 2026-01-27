@@ -38,18 +38,21 @@ export function useBetterAuth(): AuthContextType {
       if (response.data.access_token) {
         // Store the token in localStorage for use with API calls
         localStorage.setItem('access_token', response.data.access_token);
-        router.push('/tasks');
+        // Force a longer delay to ensure state updates
+        await new Promise(resolve => setTimeout(resolve, 200));
+        // Use window.location for a hard redirect to ensure state resets
+        window.location.href = '/tasks';
       } else {
         throw new Error('Sign in failed - no token received');
       }
     } catch (error: unknown) {
       const message = error && typeof error === 'object' && 'response' in error
-        ? (error as { response?: { data?: { error?: { message?: string } } }; message?: string }).response?.data?.error?.message
+        ? (error as { response?: { data?: { detail?: { message?: string } } }; message?: string }).response?.data?.detail?.message
         : error instanceof Error ? error.message : 'Sign in failed';
-      const errorMessage = message || (error instanceof Error ? error.message : 'Sign in failed');
+      const errorMessage = message || (error instanceof Error ? error.message : 'Invalid email or password');
       throw new Error(errorMessage);
     }
-  }, [router]);
+  }, []);
 
   const signUpHandler = useCallback(async (email: string, password: string) => {
     try {
@@ -61,18 +64,30 @@ export function useBetterAuth(): AuthContextType {
       if (response.data.access_token) {
         // Store the token in localStorage for use with API calls
         localStorage.setItem('access_token', response.data.access_token);
-        router.push('/tasks');
+        // Force a longer delay to ensure state updates
+        await new Promise(resolve => setTimeout(resolve, 200));
+        // Use window.location for a hard redirect to ensure state resets
+        window.location.href = '/tasks';
       } else {
         throw new Error('Sign up failed - no token received');
       }
     } catch (error: unknown) {
       const message = error && typeof error === 'object' && 'response' in error
-        ? (error as { response?: { data?: { error?: { message?: string } } }; message?: string }).response?.data?.error?.message
+        ? (error as { response?: { data?: { detail?: { message?: string; code?: string } } }; message?: string }).response?.data?.detail?.message
         : error instanceof Error ? error.message : 'Sign up failed';
-      const errorMessage = message || (error instanceof Error ? error.message : 'Sign up failed');
+
+      // Check if it's an email exists error
+      const errorCode = error && typeof error === 'object' && 'response' in error
+        ? (error as { response?: { data?: { detail?: { code?: string } } } }).response?.data?.detail?.code
+        : null;
+
+      const errorMessage = errorCode === 'EMAIL_EXISTS'
+        ? 'This email is already registered. Please sign in instead.'
+        : message || 'Sign up failed. Please try again.';
+
       throw new Error(errorMessage);
     }
-  }, [router]);
+  }, []);
 
   const signOutHandler = useCallback(async () => {
     // Clear the stored token

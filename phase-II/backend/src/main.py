@@ -48,11 +48,9 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:3001",
-        "https://hackathon-2-phase-2-three-eight.vercel.app",
-        "https://hackathon-2-phase-2-three-code-with-anums-projects.vercel.app",
-        "https://hackathon-2-phase-2-three-qhklsx2wf-code-with-anums-projects.vercel.app",
         "https://hackathon-2-phase-2-three.vercel.app",
     ],
+    allow_origin_regex=r"https://hackathon-2-phase-2-three-.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

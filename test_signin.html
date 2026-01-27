@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Signin</title>
+</head>
+<body>
+    <h1>Testing Signin Functionality</h1>
+    <div id="result"></div>
+
+    <script>
+        // Test the API endpoint
+        const API_URL = 'https://anumhussain-backend.hf.space';
+
+        async function testSignin() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Testing signin...';
+
+            try {
+                // First, try to sign up a test user
+                const signupResponse = await fetch(`${API_URL}/auth/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'testuser' + Date.now() + '@example.com',
+                        password: 'TestPassword123'
+                    })
+                });
+
+                const signupData = await signupResponse.json();
+                resultDiv.innerHTML += '<br>Signup response: ' + JSON.stringify(signupData);
+
+                if (signupData.access_token) {
+                    resultDiv.innerHTML += '<br><strong>SUCCESS! Backend is working correctly.</strong>';
+                } else {
+                    resultDiv.innerHTML += '<br>Signup response: ' + JSON.stringify(signupData);
+                }
+            } catch (error) {
+                resultDiv.innerHTML += '<br>Error: ' + error.message;
+            }
+        }
+
+        testSignin();
+    </script>
+</body>
+</html>

@@ -124,7 +124,7 @@ export function SignUpForm({ onSuccess }: SignUpFormProps) {
       setFormState((prev) => ({
         ...prev,
         isSubmitting: false,
-        errors: { general: error instanceof Error ? error.message : 'Sign up failed. Email may already exist.' },
+        errors: { general: error instanceof Error ? error.message : 'Sign up failed. Please try again.' },
       }));
     }
   };
