@@ -30,22 +30,28 @@ export function useBetterAuth(): AuthContextType {
   // Direct API calls to match our backend endpoints
   const signInHandler = useCallback(async (email: string, password: string) => {
     try {
+      console.log('Signin attempt:', email);
       const response = await apiClient.post('/auth/signin', {
         email,
         password
       });
 
+      console.log('Signin response:', response.data);
+
       if (response.data.access_token) {
         // Store the token in localStorage for use with API calls
         localStorage.setItem('access_token', response.data.access_token);
+        console.log('Token stored, redirecting to /tasks');
         // Force a longer delay to ensure state updates
         await new Promise(resolve => setTimeout(resolve, 200));
         // Use window.location for a hard redirect to ensure state resets
         window.location.href = '/tasks';
       } else {
+        console.error('No access token in response:', response.data);
         throw new Error('Sign in failed - no token received');
       }
     } catch (error: unknown) {
+      console.error('Signin error:', error);
       const message = error && typeof error === 'object' && 'response' in error
         ? (error as { response?: { data?: { detail?: { message?: string } } }; message?: string }).response?.data?.detail?.message
         : error instanceof Error ? error.message : 'Sign in failed';
