@@ -10,7 +10,7 @@ import { useTasks } from '@/lib/hooks/useTasks';
 import { TaskForm } from '@/components/tasks/TaskForm';
 import { Modal } from '@/components/ui/Modal';
 import { Button } from '@/components/ui/Button';
-import { Task, TaskUpdateRequest } from '@/types/tasks';
+import { Task, TaskCreateRequest } from '@/types/tasks';
 
 export default function TaskDetailPage() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function TaskDetailPage() {
     fetchTask();
   }, [user, taskId]);
 
-  const handleSubmit = async (data: TaskUpdateRequest) => {
+  const handleSubmit = async (data: TaskCreateRequest) => {
     if (!taskId) return;
 
     setIsSubmitting(true);
