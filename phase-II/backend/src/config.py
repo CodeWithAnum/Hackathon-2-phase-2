@@ -37,10 +37,14 @@ class Settings(BaseSettings):
     # Logging
     log_level: str = "info"
 
+    # AI Chat
+    groq_api_key: Optional[str] = None
+
     model_config = {
         "env_file": ".env",
         "env_file_encoding": "utf-8",
-        "case_sensitive": False
+        "case_sensitive": False,
+        "extra": "ignore"
     }
 
 

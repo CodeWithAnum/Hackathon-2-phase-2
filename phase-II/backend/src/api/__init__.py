@@ -1,4 +1,4 @@
 """API package."""
-from src.api.routes import router as api_router
+from src.api.routes import tasks_router, chat_router
 
-__all__ = ["api_router"]
+__all__ = ["tasks_router", "chat_router"]

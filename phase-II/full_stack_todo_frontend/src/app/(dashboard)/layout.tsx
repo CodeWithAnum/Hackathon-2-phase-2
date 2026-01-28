@@ -2,12 +2,17 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { Button } from '@/components/ui/Button';
+import { ChatButton } from '@/components/chat/ChatButton';
+import { ChatModal } from '@/components/chat/ChatModal';
+import { useChat } from '@/lib/hooks/useChat';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, signOut } = useAuth();
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const { messages, loading, sendMessage, clearMessages } = useChat();
 
   return (
     <div className="min-h-screen bg-background-dark">
@@ -39,6 +44,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {children}
       </main>
+
+      {/* Chat components */}
+      <ChatButton onClick={() => setIsChatOpen(true)} />
+      <ChatModal
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        messages={messages}
+        loading={loading}
+        onSendMessage={sendMessage}
+        onClearMessages={clearMessages}
+      />
     </div>
   );
 }

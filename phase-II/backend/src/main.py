@@ -7,7 +7,7 @@ import logging
 
 from .config import settings
 from .models.database import init_db
-from .api.routes import router as api_router
+from .api.routes import tasks_router, chat_router
 from .api.routes.auth import router as auth_router
 
 # Configure logging
@@ -60,7 +60,8 @@ app.add_middleware(
 
 # Include API routes
 app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
-app.include_router(api_router, prefix="/users/{user_id}/tasks", tags=["tasks"])
+app.include_router(tasks_router, prefix="/users/{user_id}/tasks", tags=["tasks"])
+app.include_router(chat_router, tags=["chat"])
 
 
 # Health check endpoint
